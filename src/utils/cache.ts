@@ -27,9 +27,10 @@ const redis = new Redis({
   port: config.REDIS_PORT,
   password: config.REDIS_PASSWORD,
   maxRetriesPerRequest: 5,
-  // 重试策略：最小延迟 50ms，最大延迟 2s
+  tls: config.REDIS_TLS ? {
+    rejectUnauthorized: false
+  } : undefined,
   retryStrategy: (times) => Math.min(times * 50, 2000),
-  // 仅在第一次建立连接
   lazyConnect: true,
 });
 
