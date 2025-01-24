@@ -1,6 +1,6 @@
 {
   "name": "daily-news-api",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "An Api on Today's Hot list",
   "keywords": [
     "API",
