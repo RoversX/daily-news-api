@@ -25,7 +25,7 @@ export const handleRoute = async (c: ListContext, noCache: boolean) => {
 
 const getList = async (options: Options, noCache: boolean) => {
   const { type } = options;
-  const url = `https://sspai.com/api/v1/article/tag/page/get?limit=40&tag=${type}`;
+  const url = `https://sspai.com/api/v1/article/tag/page/get?limit=10&tag=${type}`;
   const result = await get({ url, noCache });
   const list = result.data.data;
   return {
