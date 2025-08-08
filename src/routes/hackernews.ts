@@ -22,6 +22,7 @@ const getList = async (noCache: boolean) => {
   const result = await get({ 
     url: baseUrl, 
     noCache,
+    responseType: "text",
     headers: {
       "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
       "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
@@ -41,7 +42,9 @@ const getList = async (noCache: boolean) => {
       const item = $(el);
       const id = item.attr("id") || "";
       const title = item.find(".titleline a").first().text().trim();
-      const url = item.find(".titleline a").first().attr("href");
+      const href = item.find(".titleline a").first().attr("href");
+      // 规范化为绝对 URL：外链保持原样，相对链接（如 Ask HN 的 item?id=xxx）补全域名
+      const resolvedUrl = new URL(href || `item?id=${id}`, baseUrl).toString();
       
       // 获取分数并转换为数字
       const scoreText = $(`#score_${id}`).text().match(/\d+/)?.[0];
@@ -53,8 +56,8 @@ const getList = async (noCache: boolean) => {
           title,
           hot,
           timestamp: undefined,
-          url: url || `${baseUrl}/item?id=${id}`,
-          mobileUrl: url || `${baseUrl}/item?id=${id}`,
+          url: resolvedUrl,
+          mobileUrl: resolvedUrl,
         });
       }
     });
